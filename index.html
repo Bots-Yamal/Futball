@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>FutBall | Football Center</title>
+
+<style>
+:root {
+  --bg:#080808;
+  --panel:#111111;
+  --panel2:#181818;
+  --border:#292929;
+  --white:#ffffff;
+  --muted:#999999;
+  --green:#c7ff63;
+  --danger:#ff5555;
+}
+*{box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:Inter,Arial,sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh}
+.sidebar{
+  width:235px;
+  position:fixed;
+  inset:0 auto 0 0;
+  background:#0c0c0c;
+  border-right:1px solid var(--border);
+  padding:25px 17px;
+  z-index:10;
+}
+.logo{
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+  padding:5px 10px 35px;
+}
+.logo span{color:#999}
+.nav-label{
+  color:#666;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:1.7px;
+  padding:15px 10px 10px;
+}
+.nav-btn{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:12px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:#999;
+  text-align:left;
+  margin:3px 0;
+  transition:.2s;
+}
+.nav-btn:hover,.nav-btn.active{
+  background:#222;
+  color:white;
+}
+.nav-btn.active{box-shadow:inset 3px 0 white}
+.nav-icon{width:20px;text-align:center}
+.sidebar-bottom{
+  position:absolute;
+  bottom:25px;
+  left:20px;
+  right:20px;
+  color:#666;
+  font-size:11px;
+  line-height:1.8;
+}
+.main{margin-left:235px;min-height:100vh}
+.topbar{
+  height:70px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 35px;
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:rgba(8,8,8,.94);
+  backdrop-filter:blur(12px);
+}
+.top-title{font-weight:700}
+.top-right{display:flex;align-items:center;gap:14px}
+.status{
+  font-size:11px;
+  color:#aaa;
+  border:1px solid var(--border);
+  padding:7px 11px;
+  border-radius:30px;
+}
+.avatar{
+  width:32px;height:32px;border-radius:50%;
+  display:grid;place-items:center;
+  background:white;color:black;font-weight:900;
+}
+.content{padding:35px;max-width:1450px;margin:auto}
+.page{display:none}
+.page.active{display:block}
+h1{font-size:32px;margin:0 0 9px;letter-spacing:-1px}
+h2{font-size:20px;margin:0 0 17px}
+h3{font-size:15px;margin:0 0 12px}
+.subtitle{color:var(--muted);font-size:13px;margin-bottom:28px}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+}
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:19px;
+}
+.card-title{
+  color:#aaa;font-size:11px;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:12px;
+}
+.big-number{font-size:30px;font-weight:800}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.hero{
+  padding:30px;
+  border:1px solid #333;
+  border-radius:17px;
+  background:linear-gradient(120deg,#171717,#090909);
+  margin-bottom:22px;
+}
+.hero h1{font-size:38px}
+.hero p{color:#aaa;max-width:550px;line-height:1.7}
+.btn{
+  background:white;color:black;border:0;
+  border-radius:8px;padding:11px 17px;
+  font-weight:750;font-size:13px;
+  transition:.2s;
+}
+.btn:hover{background:#ddd;transform:translateY(-1px)}
+.btn.secondary{
+  background:#242424;color:white;border:1px solid #383838;
+}
+.btn.secondary:hover{background:#333}
+.btn.danger{background:#351717;color:#ffaaaa}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.team-line{display:flex;align-items:center;gap:12px}
+.crest{
+  width:42px;height:42px;border:1px solid #444;
+  background:#202020;border-radius:12px;
+  display:grid;place-items:center;font-size:13px;font-weight:900;
+}
+.match-score{font-size:25px;font-weight:900}
+.tag{
+  display:inline-block;padding:5px 9px;
+  border-radius:30px;background:#222;
+  color:#ccc;font-size:10px;font-weight:800;
+}
+.tag.live{background:#301414;color:#ff7777}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:30px 0 15px}
+input,select{
+  width:100%;background:#171717;color:white;
+  border:1px solid #363636;border-radius:8px;
+  padding:12px;outline:none;
+}
+input:focus,select:focus{border-color:#aaa}
+.field{display:grid;gap:8px;margin-bottom:15px}
+.field label{font-size:12px;color:#aaa}
+.sim-layout{
+  display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);
+  gap:17px;align-items:start;
+}
+.scoreboard{
+  background:#101010;border:1px solid #333;
+  border-radius:15px;padding:25px;margin-bottom:15px;
+}
+.scoreboard-top{text-align:center;color:#888;font-size:10px;letter-spacing:2px}
+.score-teams{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:12px;margin:24px 0;
+}
+.score-team{text-align:center;min-width:0}
+.score-team .crest{margin:0 auto 10px;width:58px;height:58px;font-size:17px}
+.score-team strong{font-size:13px;display:block;overflow-wrap:anywhere}
+.score{
+  font-size:44px;font-weight:900;letter-spacing:2px;
+  white-space:nowrap;
+}
+.clock{text-align:center;font-size:15px;font-weight:800;margin-top:7px}
+.clock small{display:block;color:#888;font-size:10px;margin-top:5px}
+.match-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.match-controls .btn{flex:1}
+.timeline{max-height:400px;overflow:auto}
+.event{
+  display:flex;gap:12px;padding:12px 0;
+  border-bottom:1px solid #252525;font-size:12px;
+}
+.event-minute{width:43px;color:#888;font-weight:800;flex-shrink:0}
+.event-icon{width:20px}
+.event-text{line-height:1.5}
+.event-text strong{display:block}
+.stat-row{margin:17px 0}
+.stat-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px}
+.bar{height:6px;background:#292929;border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;background:white;border-radius:10px}
+.empty{
+  padding:30px;text-align:center;color:#777;
+  border:1px dashed #333;border-radius:12px;font-size:13px;
+}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:13px 10px;border-bottom:1px solid #292929;text-align:left;white-space:nowrap}
+th{color:#888;font-weight:600}
+.club-cell{display:flex;align-items:center;gap:9px;font-weight:700}
+.mini-crest{
+  width:27px;height:27px;border-radius:7px;
+  display:grid;place-items:center;background:#252525;font-size:9px;
+}
+.notice{
+  background:#171717;border:1px solid #333;border-radius:10px;
+  padding:13px;color:#aaa;font-size:12px;line-height:1.6;
+}
+.hidden{display:none!important}
+.draw-options{display:grid;gap:9px;margin-top:15px}
+.draw-options button{text-align:left}
+.mobile-brand{display:none}
+.mobile-nav{display:none}
+footer{padding:25px 0;color:#555;font-size:11px}
+@media(max-width:950px){
+  .sidebar{width:190px}
+  .main{margin-left:190px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .content{padding:25px}
+}
+@media(max-width:650px){
+  .sidebar{display:none}
+  .main{margin:0;padding-bottom:70px}
+  .topbar{height:58px;padding:0 16px}
+  .mobile-brand{display:block;font-size:19px;font-weight:900}
+  .top-title{display:none}
+  .content{padding:20px 15px}
+  h1{font-size:26px}
+  .hero{padding:22px}
+  .hero h1{font-size:31px}
+  .grid{grid-template-columns:1fr 1fr;gap:9px}
+  .card{padding:14px}
+  .big-number{font-size:25px}
+  .sim-layout{grid-template-columns:1fr}
+  .scoreboard{padding:17px}
+  .score{font-size:36px}
+  .score-team .crest{width:48px;height:48px}
+  .mobile-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;
+    height:64px;background:#101010;border-top:1px solid #333;
+    z-index:20;justify-content:space-around;align-items:center;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .mobile-nav button{
+    background:none;border:0;color:#888;font-size:10px;
+    display:grid;gap:4px;justify-items:center;
+  }
+  .mobile-nav button.active{color:white}
+  .mobile-nav span{font-size:18px}
+  .status{font-size:9px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <div class="logo">Fut<span>Ball</span>.</div>
+
+  <div class="nav-label">GENERAL</div>
+  <button class="nav-btn active" data-page="home"><span class="nav-icon">⌂</span> Inicio</button>
+  <button class="nav-btn" data-page="matches"><span class="nav-icon">◷</span> Partidos</button>
+  <button class="nav-btn" data-page="leagues"><span class="nav-icon">♜</span> Competiciones</button>
+  <button class="nav-btn" data-page="teams"><span class="nav-icon">♧</span> Equipos</button>
+
+  <div class="nav-label">FÚTBOL</div>
+  <button class="nav-btn" data-page="stats"><span class="nav-icon">▥</span> Estadísticas</button>
+  <button class="nav-btn" data-page="news"><span class="nav-icon">▤</span> Noticias</button>
+
+  <div class="nav-label">HERRAMIENTAS</div>
+  <button class="nav-btn" data-page="simulator"><span class="nav-icon">⚽</span> Resultado automático</button>
+  <button class="nav-btn" data-page="history"><span class="nav-icon">◴</span> Historial</button>
+
+  <div class="sidebar-bottom">
+    FUTBALL © 2026<br>
+    The world of football.
+  </div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="mobile-brand">FutBall.</div>
+    <div class="top-title" id="topTitle">Inicio</div>
+    <div class="top-right">
+      <span class="status">FOOTBALL CENTER</span>
+      <div class="avatar">F</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- INICIO -->
+    <section class="page active" id="home">
+      <div class="hero">
+        <span class="tag">FOOTBALL CENTER</span>
+        <h1>El fútbol, en un solo lugar.</h1>
+        <p>Seguí equipos, descubrí competiciones, consultá estadísticas y creá tus propios partidos con nuestro simulador automático.</p>
+        <button class="btn" onclick="navigate('simulator')">Abrir simulador →</button>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">Competiciones</div>
+          <div class="big-number">Mundial</div>
+          <div class="muted small">Fútbol internacional</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Equipos</div>
+          <div class="big-number">12+</div>
+          <div class="muted small">Equipos de demostración</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Simulador</div>
+          <div class="big-number">90'</div>
+          <div class="muted small">Minutos por encuentro</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>Accesos rápidos</h2>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">01 / Simulación</div>
+          <h3>Resultado automático</h3>
+          <p class="muted small">Generá partidos con goles, pases, tarjetas y estadísticas.</p>
+          <button class="btn secondary" onclick="navigate('simulator')">Entrar →</button>
+        </div>
+        <div class="card">
+          <div class="card-title">02 / Registro</div>
+          <h3>Historial de partidos</h3>
+          <p class="muted small">Consultá tus encuentros simulados.</p>
+          <button class="btn secondary" onclick="navigate('history')">Consultar →</button>
+        </div>
+      </div>
+      <div class="notice" style="margin-top:18px">
+        Esta versión contiene datos de demostración. Los resultados simulados no representan partidos reales.
+      </div>
+    </section>
+
+    <!-- PARTIDOS -->
+    <section class="page" id="matches">
+      <h1>Partidos</h1>
+      <p class="subtitle">Centro de encuentros de FutBall.</p>
+      <div class="card">
+        <h3>Partidos reales</h3>
+        <div class="empty">Todavía no hay conexión con una API deportiva.<br>Los encuentros reales aparecerán cuando conectemos una fuente de datos.</div>
+      </div>
+      <div class="section-head"><h2>Simular un encuentro</h2></div>
+      <div class="card">
+        <p class="muted small">Creá un partido ficticio entre dos equipos.</p>
+        <button class="btn" onclick="navigate('simulator')">Ir al simulador →</button>
+      </div>
+    </section>
+
+    <!-- COMPETICIONES -->
+    <section class="page" id="leagues">
+      <h1>Competiciones</h1>
+      <p class="subtitle">Ligas y torneos del fútbol mundial.</p>
+      <div class="grid">
+        <div class="card"><div class="card-title">España</div><h3>LaLiga</h3><span class="muted small">Primera división</span></div>
+        <div class="card"><div class="card-title">Inglaterra</div><h3>Premier League</h3><span class="muted small">Primera división</span></div>
+        <div class="card"><div class="card-title">Europa</div><h3>Champions League</h3><span class="muted small">Competición continental</span></div>
+        <div class="card"><div class="card-title">Italia</div><h3>Serie A</h3><span class="muted small">Primera división</span></div>
+        <div class="card"><div class="card-title">Alemania</div><h3>Bundesliga</h3><span class="muted small">Primera división</span></div>
+        <div class="card"><div class="card-title">Francia</div><h3>Ligue 1</h3><span class="muted small">Primera división</span></div>
+      </div>
+      <p class="muted small">Listado ilustrativo. Las tablas y posiciones reales se conectarán posteriormente.</p>
+    </section>
+
+    <!-- EQUIPOS -->
+    <section class="page" id="teams">
+      <h1>Equipos</h1>
+      <p class="subtitle">Explorá los clubes disponibles para las simulaciones.</p>
+      <div class="field">
+        <input id="teamSearch" placeholder="Buscar equipo..." oninput="filterTeams()">
+      </div>
+      <div class="grid" id="teamGrid"></div>
+    </section>
+
+    <!-- ESTADÍSTICAS -->
+    <section class="page" id="stats">
+      <h1>Estadísticas</h1>
+      <p class="subtitle">Datos de tus partidos simulados.</p>
+      <div class="grid">
+        <div class="card"><div class="card-title">Partidos simulados</div><div class="big-number" id="totalMatches">0</div></div>
+        <div class="card"><div class="card-title">Goles simulados</div><div class="big-number" id="totalGoals">0</div></div>
+        <div class="card"><div class="card-title">Empates</div><div class="big-number" id="totalDraws">0</div></div>
+      </div>
+      <div class="card" style="margin-top:17px">
+        <h3>Información</h3>
+        <p class="muted small">Estas cifras se calculan a partir de tu historial local de simulaciones.</p>
+      </div>
+    </section>
+
+    <!-- NOTICIAS -->
+    <section class="page" id="news">
+      <h1>Noticias</h1>
+      <p class="subtitle">Actualidad del fútbol.</p>
+      <div class="card">
+        <div class="empty">Las noticias estarán disponibles cuando conectemos una fuente de noticias deportivas.<br><br>No mostramos noticias inventadas como si fueran reales.</div>
+      </div>
+    </section>
+
+    <!-- SIMULADOR -->
+    <section class="page" id="simulator">
+      <h1>Resultado automático</h1>
+      <p class="subtitle">Creá y simulá tu propio encuentro minuto a minuto.</p>
+
+      <div class="card" id="setup">
+        <h2>Configuración del partido</h2>
+        <div class="field">
+          <label>Equipo local</label>
+          <select id="homeTeam"></select>
+        </div>
+        <div class="field">
+          <label>Equipo visitante</label>
+          <select id="awayTeam"></select>
+        </div>
+        <div class="field">
+          <label>Nombre del equipo local personalizado (opcional)</label>
+          <input id="customHome" placeholder="Ej. Mi equipo">
+        </div>
+        <div class="field">
+          <label>Nombre del equipo visitante personalizado (opcional)</label>
+          <input id="customAway" placeholder="Ej. Equipo rival">
+        </div>
+        <div class="notice">
+          El reloj avanza a razón de un segundo real por minuto simulado. El descanso se activa automáticamente al minuto 45.
+        </div>
+        <button class="btn" style="width:100%;margin-top:16px" onclick="startMatch()">⚽ Comenzar partido</button>
+      </div>
+
+      <div id="matchArea" class="hidden">
+        <div class="sim-layout">
+          <div>
+            <div class="scoreboard">
+              <div class="row">
+                <span class="tag" id="phaseTag">EN JUEGO</span>
+                <span class="muted small">FUTBALL SIMULATOR</span>
+              </div>
+              <div class="scoreboard-top" style="margin-top:20px">MARCADOR DEL ENCUENTRO</div>
+              <div class="score-teams">
+                <div class="score-team">
+                  <div class="crest" id="homeCrest">LOC</div>
+                  <strong id="homeName">Local</strong>
+                </div>
+                <div>
+                  <div class="score" id="score">0 - 0</div>
+                  <div class="clock" id="clock">00'<small>PRIMER TIEMPO</small></div>
+                </div>
+                <div class="score-team">
+                  <div class="crest" id="awayCrest">VIS</div>
+                  <strong id="awayName">Visitante</strong>
+                </div>
+              </div>
+              <div class="match-controls">
+                <button class="btn secondary" id="pauseBtn" onclick="togglePause()">Ⅱ Pausar</button>
+                <button class="btn secondary" onclick="resetMatch()">↻ Reiniciar</button>
+              </div>
+              <div id="breakPanel" class="hidden notice" style="margin-top:15px">
+                <h3 id="breakTitle">Descanso</h3>
+                <p id="breakDescription">Finalizó el primer tiempo.</p>
+                <button class="btn" id="continueBtn" onclick="continueMatch()">Comenzar segundo tiempo →</button>
+              </div>
+              <div id="drawPanel" class="hidden notice" style="margin-top:15px">
+                <h3>El partido terminó empatado</h3>
+                <p>Elegí cómo resolver el encuentro.</p>
+                <div class="draw-options">
+                  <button class="btn secondary" onclick="finishDraw()">Terminar en empate</button>
+                  <button class="btn secondary" id="extraBtn" onclick="startExtraTime()">Jugar prórroga (30 minutos)</button>
+                  <button class="btn secondary" onclick="startPenalties()">Ir a penales</button>
+                </div>
+              </div>
+              <div id="finalPanel" class="hidden notice" style="margin-top:15px">
+                <h3>Encuentro finalizado</h3>
+                <p id="finalDescription"></p>
+                <button class="btn" onclick="resetMatch()">Crear otro partido</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="row">
+                <h3>Estadísticas del encuentro</h3>
+                <span class="tag">EN VIVO</span>
+              </div>
+              <div id="statsArea"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="row">
+              <h3>Eventos del partido</h3>
+              <span class="tag">LIVE</span>
+            </div>
+            <div class="timeline" id="timeline">
+              <div class="empty">Los acontecimientos aparecerán aquí cuando comience el encuentro.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section class="page" id="history">
+      <h1>Historial</h1>
+      <p class="subtitle">Tus simulaciones anteriores.</p>
+      <div class="card">
+        <div class="row">
+          <h3>Partidos guardados</h3>
+          <button class="btn secondary" onclick="clearHistory()">Borrar historial</button>
+        </div>
+        <div id="historyList"></div>
+      </div>
+    </section>
+
+    <footer>FutBall © 2026 · Plataforma de fútbol independiente.</footer>
+  </div>
+</main>
+
+<nav class="mobile-nav">
+  <button class="active" data-page="home"><span>⌂</span>Inicio</button>
+  <button data-page="matches"><span>◷</span>Partidos</button>
+  <button data-page="teams"><span>♧</span>Equipos</button>
+  <button data-page="simulator"><span>⚽</span>Simular</button>
+  <button data-page="history"><span>◴</span>Historial</button>
+</nav>
+</div>
+
+<script>
+const TEAMS = [
+  "Real Madrid","Barcelona","Atlético de Madrid",
+  "Manchester City","Liverpool","Arsenal",
+  "PSG","Bayern Múnich","Juventus","Inter",
+  "Milan","Chelsea"
+];
+
+const $ = id => document.getElementById(id);
+let match = null;
+let timer = null;
+let history = JSON.parse(localStorage.getItem("futball_history") || "[]");
+
+function navigate(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  $(page).classList.add("active");
+
+  document.querySelectorAll("[data-page]").forEach(b=>{
+    b.classList.toggle("active",b.dataset.page===page);
+  });
+
+  const titles={
+    home:"Inicio",matches:"Partidos",leagues:"Competiciones",
+    teams:"Equipos",stats:"Estadísticas",news:"Noticias",
+    simulator:"Resultado automático",history:"Historial"
+  };
+  $("topTitle").textContent=titles[page];
+  if(page==="history") renderHistory();
+  if(page==="stats") renderGlobalStats();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll("[data-page]").forEach(b=>{
+  b.addEventListener("click",()=>navigate(b.dataset.page));
+});
+
+function initials(name){
+  return name.split(/\s+/).map(x=>x[0]).join("").slice(0,3).toUpperCase();
+}
+
+function setupTeams(){
+  const options=TEAMS.map(t=>`<option value="${t}">${t}</option>`).join("");
+  $("homeTeam").innerHTML=options+'<option value="custom">Equipo personalizado</option>';
+  $("awayTeam").innerHTML=options+'<option value="custom">Equipo personalizado</option>';
+  $("homeTeam").value="Real Madrid";
+  $("awayTeam").value="Barcelona";
+  renderTeams();
+}
+
+function renderTeams(list=TEAMS){
+  $("teamGrid").innerHTML=list.map(t=>`
+    <div class="card">
+      <div class="team-line">
+        <div class="crest">${initials(t)}</div>
+        <div><strong>${t}</strong><div class="muted small">Club de fútbol</div></div>
+      </div>
+    </div>`).join("") || '<div class="empty">No se encontraron equipos.</div>';
+}
+
+function filterTeams(){
+  const q=$("teamSearch").value.toLowerCase();
+  renderTeams(TEAMS.filter(t=>t.toLowerCase().includes(q)));
+}
+
+function random(min,max){
+  return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function startMatch(){
+  const home=$("customHome").value.trim() || ($("homeTeam").value==="custom"?"Equipo local":$("homeTeam").value);
+  const away=$("customAway").value.trim() || ($("awayTeam").value==="custom"?"Equipo visitante":$("awayTeam").value);
+
+  if(home.toLowerCase()===away.toLowerCase()){
+    alert("Elegí dos equipos diferentes.");
+    return;
+  }
+
+  stopTimer();
+
+  match={
+    home,away,
+    score:[0,0],
+    minute:0,
+    phase:"first",
+    added:0,
+    extra:false,
+    paused:false,
+    ended:false,
+    saved:false,
+    possession:[0,0],
+    stats:[
+      {passes:0,shots:0,onTarget:0,fouls:0,corners:0,yellow:0,red:0},
+      {passes:0,shots:0,onTarget:0,fouls:0,corners:0,yellow:0,red:0}
+    ],
+    events:[]
+  };
+
+  $("setup").classList.add("hidden");
+  $("matchArea").classList.remove("hidden");
+  $("homeName").textContent=home;
+  $("awayName").textContent=away;
+  $("homeCrest").textContent=initials(home);
+  $("awayCrest").textContent=initials(away);
+  $("breakPanel").classList.add("hidden");
+  $("drawPanel").classList.add("hidden");
+  $("finalPanel").classList.add("hidden");
+  $("pauseBtn").disabled=false;
+  $("pauseBtn").textContent="Ⅱ Pausar";
+  $("timeline").innerHTML="";
+  $("phaseTag").textContent="EN JUEGO";
+
+  addEvent(0,"🏁","Inicio del partido","El árbitro da comienzo al encuentro.");
+  renderMatch();
+  startTimer();
+}
+
+function startTimer(){
+  stopTimer();
+  match.paused=false;
+  timer=setInterval(tick,1000);
+}
+
+function stopTimer(){
+  if(timer){clearInterval(timer);timer=null;}
+}
+
+function tick(){
+  if(!match || match.ended || match.paused)return;
+
+  match.minute++;
+
+  if(match.phase==="first" && match.minute>=45){
+    match.minute=45;
+    match.phase="halftime";
+    stopTimer();
+    addEvent(45,"⏸️","Descanso","Finaliza el primer tiempo.");
+    showBreak("Descanso","Terminó el primer tiempo. Revisá el marcador y las estadísticas.");
+    renderMatch();
+    return;
+  }
+
+  if(match.phase==="second" && match.minute===90){
+    match.added=random(2,5);
+    match.phase="added";
+    addEvent(90,"⏱️","Tiempo añadido",`Se agregan ${match.added} minutos.`);
+  }
+
+  if(match.phase==="added" && match.minute>=90+match.added){
+    match.minute=90+match.added;
+    addEvent(match.minute,"🏁","Final del partido","El árbitro señala el final.");
+    stopTimer();
+    match.ended=true;
+    showEnd();
+    renderMatch();
+    return;
+  }
+
+  if(match.phase==="extra1" && match.minute>=105){
+    match.minute=105;
+    match.phase="extrabreak";
+    stopTimer();
+    addEvent(105,"⏸️","Descanso de la prórroga","Finalizan los primeros 15 minutos extra.");
+    showBreak("Descanso de prórroga","Pausa antes de los últimos 15 minutos.");
+    $("continueBtn").textContent="Comenzar últimos 15 minutos →";
+    renderMatch();
+    return;
+  }
+
+  if(match.phase==="extra2" && match.minute>=120){
+    match.minute=120;
+    stopTimer();
+    match.ended=true;
+    addEvent(120,"🏁","Final de la prórroga","Finalizan los 30 minutos extra.");
+    showEnd();
+    renderMatch();
+    return;
+  }
+
+  generateEvent();
+  renderMatch();
+}
+
+function generateEvent(){
+  const side=random(0,1);
+  const team=side===0?match.home:match.away;
+  const s=match.stats[side];
+  const r=Math.random();
+  const minute=displayMinute();
+
+  // Cada minuto se registra actividad y se evalúan acontecimientos.
+  if(r<0.42){
+    s.passes+=random(1,5);
+    match.possession[side]++;
+    addEvent(minute,"⚽","Pases",`${team} completa varios pases y mantiene la posesión.`);
+  }else if(r<0.60){
+    s.shots++;
+    if(Math.random()<0.45)s.onTarget++;
+    addEvent(minute,"🎯","Remate",`${team} intenta un disparo a portería.`);
+  }else if(r<0.70){
+    s.fouls++;
+    addEvent(minute,"⚠️","Falta",`Falta cometida por ${team}.`);
+  }else if(r<0.76){
+    s.corners++;
+    addEvent(minute,"🚩","Córner",`Tiro de esquina para ${team}.`);
+  }else if(r<0.79){
+    s.yellow++;
+    addEvent(minute,"🟨","Tarjeta amarilla",`Amonestación para un jugador de ${team}.`);
+  }else if(r<0.792){
+    s.red++;
+    addEvent(minute,"🟥","Tarjeta roja",`Expulsión para un jugador de ${team}.`);
+  }else if(r<0.825){
+    s.shots++;
+    s.onTarget++;
+    match.score[side]++;
+    addEvent(minute,"⚽","¡GOOOOL!",`¡Gol de ${team}! El marcador cambia a ${match.score[0]} - ${match.score[1]}.`);
+  }else if(r<0.85){
+    addEvent(minute,"🔥","Ocasión peligrosa",`${team} genera una oportunidad de gol.`);
+  }
+}
+
+function displayMinute(){
+  if(match.minute>90)return `90+${match.minute-90}`;
+  return match.minute;
+}
+
+function addEvent(minute,icon,title,description){
+  match.events.unshift({minute,icon,title,description});
+  renderTimeline();
+}
+
+function renderTimeline(){
+  $("timeline").innerHTML=match.events.map(e=>`
+    <div class="event">
+      <div class="event-minute">${e.minute===0?"INI":e.minute+"'"}</div>
+      <div class="event-icon">${e.icon}</div>
+      <div class="event-text"><strong>${e.title}</strong><span class="muted">${e.description}</span></div>
+    </div>`).join("");
+}
+
+function renderMatch(){
+  if(!match)return;
+  $("score").textContent=`${match.score[0]} - ${match.score[1]}`;
+  $("clock").innerHTML=`${match.minute===0?"00":displayMinute()}'<small>${phaseName()}</small>`;
+  $("phaseTag").textContent=match.ended?"FINALIZADO":match.paused?"PAUSADO":match.phase==="halftime"||match.phase==="extrabreak"?"DESCANSO":"EN JUEGO";
+  renderStats();
+  renderTimeline();
+}
+
+function phaseName(){
+  const p=match.phase;
+  if(p==="first")return "PRIMER TIEMPO";
+  if(p==="halftime")return "DESCANSO";
+  if(p==="second")return "SEGUNDO TIEMPO";
+  if(p==="added")return "TIEMPO AÑADIDO";
+  if(p==="extra1"||p==="extra2"||p==="extrabreak")return "PRÓRROGA";
+  return "FINALIZADO";
+}
+
+function renderStats(){
+  const a=match.stats[0],b=match.stats[1];
+  const total=match.possession[0]+match.possession[1]||1;
+  const p0=Math.round(match.possession[0]/total*100);
+  const p1=100-p0;
+
+  const rows=[
+    ["Posesión",p0+"%",p1+"%",p0],
+    ["Pases",a.passes,b.passes,null],
+    ["Tiros",a.shots,b.shots,null],
+    ["Tiros a puerta",a.onTarget,b.onTarget,null],
+    ["Faltas",a.fouls,b.fouls,null],
+    ["Córners",a.corners,b.corners,null],
+    ["Amarillas",a.yellow,b.yellow,null],
+    ["Rojas",a.red,b.red,null]
+  ];
+
+  $("statsArea").innerHTML=rows.map(row=>`
+    <div class="stat-row">
+      <div class="stat-label">
+        <strong>${row[1]}</strong><span class="muted">${row[0]}</span><strong>${row[2]}</strong>
+      </div>
+      ${row[3]!==null?`<div class="bar"><div class="bar-fill" style="width:${row[3]}%"></div></div>`:""}
+    </div>`).join("");
+}
+
+function showBreak(title,description){
+  $("breakPanel").classList.remove("hidden");
+  $("breakTitle").textContent=title;
+  $("breakDescription").textContent=description;
+  $("pauseBtn").disabled=true;
+}
+
+function continueMatch(){
+  $("breakPanel").classList.add("hidden");
+  $("pauseBtn").disabled=false;
+
+  if(match.phase==="halftime"){
+    match.phase="second";
+    match.minute=45;
+    addEvent(46,"🏁","Segundo tiempo","El árbitro reanuda el encuentro.");
+  }else if(match.phase==="extrabreak"){
+    match.phase="extra2";
+    match.minute=105;
+    addEvent(106,"🏁","Comienza la segunda parte de la prórroga","El juego se reanuda.");
+  }
+  renderMatch();
+  startTimer();
+}
+
+function togglePause(){
+  if(!match||match.ended)return;
+  if(match.phase==="halftime"||match.phase==="extrabreak")return;
+
+  if(match.paused){
+    startTimer();
+    $("pauseBtn").textContent="Ⅱ Pausar";
+  }else{
+    match.paused=true;
+    stopTimer();
+    $("pauseBtn").textContent="▶ Reanudar";
+  }
+  renderMatch();
+}
+
+function showEnd(){
+  $("pauseBtn").disabled=true;
+  $("pauseBtn").textContent="Finalizado";
+  $("breakPanel").classList.add("hidden");
+
+  if(match.score[0]===match.score[1]){
+    $("drawPanel").classList.remove("hidden");
+    $("extraBtn").classList.toggle("hidden",match.extra);
+    $("finalPanel").classList.add("hidden");
+    $("phaseTag").textContent="EMPATE";
+  }else{
+    completeMatch("Partido finalizado.");
+  }
+  renderMatch();
+}
+
+function finishDraw(){
+  $("drawPanel").classList.add("hidden");
+  completeMatch("El encuentro terminó en empate.");
+}
+
+function startExtraTime(){
+  match.extra=true;
+  match.ended=false;
+  match.phase="extra1";
+  match.minute=90;
+  $("drawPanel").classList.add("hidden");
+  $("finalPanel").classList.add("hidden");
+  $("pauseBtn").disabled=false;
+  addEvent(90,"⏱️","Comienza la prórroga","Dos tiempos de 15 minutos.");
+  renderMatch();
+  startTimer();
+}
+
+function startPenalties(){
+  stopTimer();
+  const homeGoals=random(2,5);
+  const awayGoals=random(2,5);
+  let h=homeGoals,a=awayGoals;
+
+  while(h===a){
+    h+=random(0,1);
+    a+=random(0,1);
+    if(h===a && h<10)continue;
+    if(h===a)a++;
+  }
+
+  addEvent("PEN","🥅","Tanda de penales",`${match.home}: ${h} · ${match.away}: ${a}`);
+  match.penalties=[h,a];
+  $("drawPanel").classList.add("hidden");
+  match.ended=true;
+  completeMatch("El encuentro se decidió mediante tanda de penales.");
+}
+
+function completeMatch(description){
+  match.ended=true;
+  stopTimer();
+  $("drawPanel").classList.add("hidden");
+  $("finalPanel").classList.remove("hidden");
+  $("finalDescription").textContent=
+    `${description} Resultado: ${match.home} ${match.score[0]} - ${match.score[1]} ${match.away}.`+
+    (match.penalties?` Penales: ${match.penalties[0]} - ${match.penalties[1]}.`:"");
+  $("phaseTag").textContent="FINALIZADO";
+  $("pauseBtn").disabled=true;
+  $("pauseBtn").textContent="Finalizado";
+
+  if(!match.saved){
+    history.unshift({
+      home:match.home,away:match.away,
+      score:[...match.score],
+      date:new Date().toLocaleString("es"),
+      penalties:match.penalties||null,
+      events:match.events.length
+    });
+    history=history.slice(0,100);
+    localStorage.setItem("futball_history",JSON.stringify(history));
+    match.saved=true;
+  }
+  renderMatch();
+  renderHistory();
+  renderGlobalStats();
+}
+
+function resetMatch(){
+  stopTimer();
+  match=null;
+  $("matchArea").classList.add("hidden");
+  $("setup").classList.remove("hidden");
+  $("customHome").value="";
+  $("customAway").value="";
+  $("homeTeam").value="Real Madrid";
+  $("awayTeam").value="Barcelona";
+}
+
+function renderHistory(){
+  if(!history.length){
+    $("historyList").innerHTML='<div class="empty">Todavía no guardaste partidos simulados.</div>';
+    return;
+  }
+  $("historyList").innerHTML=`
+    <div class="table-wrap"><table>
+      <thead><tr><th>Encuentro</th><th>Resultado</th><th>Penales</th><th>Fecha</th></tr></thead>
+      <tbody>${history.map(m=>`
+        <tr>
+          <td>${m.home} - ${m.away}</td>
+          <td><strong>${m.score[0]} - ${m.score[1]}</strong></td>
+          <td>${m.penalties?m.penalties.join(" - "):"—"}</td>
+          <td>${m.date}</td>
+        </tr>`).join("")}</tbody>
+    </table></div>`;
+}
+
+function clearHistory(){
+  if(!confirm("¿Seguro que querés borrar todo el historial?"))return;
+  history=[];
+  localStorage.removeItem("futball_history");
+  renderHistory();
+  renderGlobalStats();
+}
+
+function renderGlobalStats(){
+  $("totalMatches").textContent=history.length;
+  $("totalGoals").textContent=history.reduce((n,m)=>n+m.score[0]+m.score[1],0);
+  $("totalDraws").textContent=history.filter(m=>m.score[0]===m.score[1]).length;
+}
+
+setupTeams();
+renderHistory();
+renderGlobalStats();
+</script>
+</body>
+</html>
